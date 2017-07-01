@@ -30,7 +30,6 @@ int main()
             else
             {
                 sum+=w;
-                printf("当前总重量是%f\n",sum);
             }
             
         }
