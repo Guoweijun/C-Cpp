@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Hungman</title>
+</head>
+<body>
+<canvas id="canvas" width="1600" height="1600"></canvas>
+<script>
+	var canvas = document.getElementById('canvas');
+	var ctx = canvas.getContext("2d");
+	ctx.lineWidth = 4;
+	var words = ["strange","development","dentist","animal","commercialization"];
+	var word = words[Math.floor(Math.random()*words.length)];
+	var wrongTimes = 0;
+	var remaining_letters = word.length;
+	var answer = [];
+	guessed = [];
+	quit = false;
+	function drawMan(part) {
+		ctx.beginPath();
+		if (part == 1) {
+			ctx.moveTo(10,10);
+			ctx.lineTo(100,10);
+		} else if (part == 2) {
+			ctx.moveTo(10,10);
+			ctx.lineTo(10,190);
+		} else if (part == 3) {
+			ctx.moveTo(10,190);
+			ctx.lineTo(100,190);
+		} else if (part == 4) {
+			ctx.moveTo(55,10);
+			ctx.lineTo(55,32);
+		} else if (part == 5) {
+			ctx.arc(56.5,43,11,0,Math.PI*2,false);
+		} else if (part == 6) {
+			ctx.moveTo(55,54);
+			ctx.lineTo(55,98);
+		} else if (part == 7) {
+			ctx.moveTo(55,76);
+			ctx.lineTo(44,76);
+		} else if (part == 8) {
+			ctx.moveTo(55,76);
+			ctx.lineTo(66,76);
+		} else if (part == 9) {
+			ctx.moveTo(55,98);
+			ctx.lineTo(44,109);
+		} else {
+			ctx.moveTo(55,98);
+			ctx.lineTo(66,109);
+		}
+		ctx.stroke();
+	}
+	for (var i = 0; i < word.length; i++) {
+		answer[i] = "_";
+	}
+	ctx.font = "40px  Courier";
+	ctx.fillText(answer.join(" "), 10,380);
+	alert(answer.join(" "));
+	while (remaining_letters != 0) {	
+		if (wrongTimes == 10) {
+			quit = true;
+			break;
+		}
+		guess = prompt("Guess a letter, or click Cancel to quit.");
+		if (guess == null) {
+			quit = true;
+			break;
+		} else if (guess.length != 1) {
+			alert("Please enter a single letter!");
+		} else if (guessed.indexOf(guess.toLowerCase()) != -1) {
+			alert("This word had already been guessed,please guess another word.");
+		} else if (word.indexOf(guess.toLowerCase()) == -1) {
+			alert("Wrong letter!");
+			guessed.push(guess.toLowerCase());
+			wrongTimes++;
+			drawMan(wrongTimes);
+		} else {
+			for (var j = 0; j < word.length; j++) {
+				if (word[j] == guess.toLowerCase()) {
+					answer[j] = guess.toLowerCase();
+					remaining_letters--;
+				}
+			}
+			alert("Right letter!");
+			guessed.push(guess.toLowerCase());
+		}		
+		ctx.fillText(answer.join(" "), 10,380);
+	}
+	if (quit == true) {
+		alert("Game Over");
+		alert(word);
+	} else {
+		alert("Good job!");
+	}
+</script>
+</body>
+</html>
